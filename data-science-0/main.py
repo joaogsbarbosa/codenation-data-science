@@ -50,12 +50,12 @@ def q1():
 # 
 # Há quantas mulheres com idade entre 26 e 35 anos no dataset? Responda como um único escalar.
 
-# In[92]:
+# In[15]:
 
 
 def q2():
     faixa = black_friday.loc[(black_friday['Age'] == '26-35') & (black_friday['Gender'] == 'F')]
-    return faixa['Age'].count()
+    return int(faixa['Age'].count())
 
 
 # ## Questão 3
@@ -73,7 +73,7 @@ def q3():
 # 
 # Quantos tipos de dados diferentes existem no dataset? Responda como um único escalar.
 
-# In[108]:
+# In[8]:
 
 
 def q4():
@@ -106,7 +106,7 @@ def q6():
 # 
 # Qual o valor mais frequente (sem contar nulls) em `Product_Category_3`? Responda como um único escalar.
 
-# In[27]:
+# In[11]:
 
 
 def q7():
@@ -117,19 +117,22 @@ def q7():
 # 
 # Qual a nova média da variável (coluna) `Purchase` após sua normalização? Responda como um único escalar.
 
-# In[110]:
+# In[43]:
 
 
 def q8():
-    purchase_norm = black_friday['Purchase']/black_friday['Purchase'].sum()
-    return purchase_norm.mean()
+    from sklearn import preprocessing
+    x = black_friday['Purchase'].values.reshape(-1, 1)
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(x)
+    return x_scaled.mean()
 
 
 # ## Questão 9
 # 
 # Quantas ocorrências entre -1 e 1 inclusive existem da variáel `Purchase` após sua padronização? Responda como um único escalar.
 
-# In[53]:
+# In[13]:
 
 
 def q9():
@@ -147,8 +150,5 @@ def q9():
 
 
 def q10():
-    if black_friday['Product_Category_2'].isnull() is black_friday['Product_Category_3'].isnull():
-        return True
-    else:
-        return False
+    return (not (False in black_friday.loc[black_friday['Product_Category_2'].isna() == True]['Product_Category_3'].isna().unique()))
 
